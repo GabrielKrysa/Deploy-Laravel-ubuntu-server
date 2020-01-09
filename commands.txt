@@ -1,0 +1,116 @@
+Passo 1: Atualizações automaticas
+    sudo apt-get update
+    sudo apt-get install -y unattended-upgrades
+
+Passo 2: Softwares necessarios
+    sudo apt-get install -y software-properties-common
+    sudo add-apt-repository ppa:nginx/stable
+    sudo apt-get update
+    sudo apt-get install -y nginx
+    sudo service nginx restart
+    //Depois desses comandos etapa verificar se deu certo usando o dns no navegador, se tudo estiver okay deve aparecer uma tela escrita "Welcome to nginx on Debian!"
+    sudo apt-get install -y git curl wget 
+    - PHP 7 (Needed for Laravel 5.7)
+        sudo apt-get purge php5-fpm
+        sudo apt-get --purge autoremove
+        sudo apt-get install -y software-properties-common
+        sudo apt-get install -y python-software-properties
+        sudo add-apt-repository ppa:ondrej/php
+        sudo apt-get update
+        - Install PHP 7 on the server
+            sudo apt-get install -y php7.3 php7.3-fpm php-mysql php7.3-mysql php-mbstring php-gettext libapache2-mod-php7.3 php-doctrine-dbal php-xml redis-server
+            sudo systemctl restart php7.3-fpm    
+    - Composer 
+        curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+    - Mysql
+        sudo apt-get install -y mysql-server
+        sudo mysql_install_db
+    - Node e NPM
+        curl -sL https://deb.nodesource.com/setup | sudo bash -
+        sudo apt-get update
+        sudo apt-get install -y npm
+        ln -s /usr/bin/nodejs /usr/bin/node
+        sudo npm install --global yarn gulp-cli grunt-cli
+
+Passo 3: Como acessar seu aplicativo da Web via Git
+    cd /var/www
+    sudo git clone your repositorie link
+
+Passo 4: Configurando servidor 
+    sudo nano /etc/nginx/sites-available/default
+    - Dentro do arquivo deixe desse jeito
+        server {
+            listen 80 default_server;
+            listen [::]:80 default_server;
+
+            root /var/www/AppName/public;
+
+            index index.html index.html index.nginx-debian.html index.php;
+
+            server_name _;
+
+            location / {
+                    try_files $uri $uri/ /index.php?$query_string;
+            }
+
+            location ~ \.php$ {
+                include fastcgi_params;
+                fastcgi_pass unix:/run/php/php.7.3-fpm.sock;
+            }
+
+            location ~ /\.ht {
+                    deny all;
+                }
+        }
+
+Passo 5: Setando permissões
+    sudo chown -R www-data:www-data /var/www/AppName/public
+    sudo chmod 755 /var/www
+    sudo chmod -R 755 /var/www/AppName/bootstrap/cache
+    sudo chmod -R 755 /var/www/AppName/storage
+
+Passo 6: Instalando dependencias
+    sudo apt-get install php-curl   #No meu caso
+    sudo composer install
+    sudo npm install
+    sudo npm run production
+
+Passo 7: Configurando Mysql
+    sudo mysql -u root -p
+    create database database_name
+    -Criando usuario com todos os previlegios
+        GRANT ALL PRIVILEGES ON app_db.* TO 'appname_user'@'localhost' IDENTIFIED BY 'password-of-your-choosing';
+        flush privileges;
+
+Passo 8: Configurando o ambiente Laravel
+    cd /var/www/AppName
+    cp .env.example .env
+    nano .env #Configure o .env como desejar
+
+Passo 9: Configurar LetsEncrypt para SSL
+    sudo apt-get install -y software-properties-common
+    sudo add-apt-repository ppa:certbot/certbot
+    sudo apt-get update
+    sudo apt-get install -y python-certbot-nginx
+
+Passo 10: Configure o host virtual do site
+    sudo nano /etc/nginx/sites-available/default
+    - dentro do nano 
+        mude de:
+            server_name _;
+        para:
+            server_name example.com www.example.com;
+
+        mude de:
+            listen 80 default_server;
+            listen [::]:80 default_server;
+        para:
+            listen 80 default_server;
+            listen [::]:80;
+    sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/example.com
+    sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+    
+
+links para correções de alguns erros
+https://sempreupdate.com.br/como-destravar-o-var-lib-dpkg-lock-ubuntu-debian-linux-mint/ #Corrigir a mensagem /var/lib/dpkg/lock
+sudo  apt install zip unzip php-zip #Para corrigir o erro do ZIP and UNZIP na hora do composer install
