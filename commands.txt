@@ -137,8 +137,8 @@ Para redefinição de senha
 		MAIL_DRIVER=smtp
 		MAIL_HOST=smtp.gmail.com
 		MAIL_PORT=587
-		MAIL_USERNAME=gabrielkrysa@gmail.com
-		MAIL_PASSWORD=Krysa090999
+		MAIL_USERNAME=email@gmail.com
+		MAIL_PASSWORD=senha
 		MAIL_ENCRYPTION=tls
 	E realize a instalar do guzzle
 
