@@ -144,3 +144,10 @@ Para redefinição de senha
 
 ERRO Temporary failure in name resolution
 Solução => sudo systemctl enable systemd-resolved.service
+
+ERRO file_put_contents no storage
+Solução => 
+	 php artisan cache:clear
+	 chmod -R gu+w storage
+	 chmod -R guo+w storage
+
