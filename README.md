@@ -40,7 +40,7 @@
 - Passo 4: Configurando servidor 
     - sudo nano /etc/nginx/sites-available/default
     - Dentro do arquivo deixe desse jeito
-       server {
+    server {
     listen 80;
     server_name _;
     root "/var/www/AppName/public";
@@ -122,34 +122,34 @@
     - sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
     
 
-links e correções de alguns erros
-https://sempreupdate.com.br/como-destravar-o-var-lib-dpkg-lock-ubuntu-debian-linux-mint/ #Corrigir a mensagem /var/lib/dpkg/lock
-sudo  apt install zip unzip php-zip #Para corrigir o erro do ZIP and UNZIP na hora do composer install
+- links e correções de alguns erros
+- https://sempreupdate.com.br/como-destravar-o-var-lib-dpkg-lock-ubuntu-debian-linux-mint/ #Corrigir a mensagem /var/lib/dpkg/lock
+- sudo  apt install zip unzip php-zip #Para corrigir o erro do ZIP and UNZIP na hora do composer install
 
-Erro time out 504 (nginx)
--no arquivos nginx.conf
-	adiciona dentro do bloco http o seguinte comando: fastcgi_read_timeout 300;
--sudo service nginx reload
+- Erro time out 504 (nginx)
+	-no arquivos nginx.conf
+		- adiciona dentro do bloco http o seguinte comando: fastcgi_read_timeout 300;
+- sudo service nginx reload
 
-Cron Job
-* * * * * cd /var/www/Organizacional-ccbeu && php artisan schedule:run >> /dev/null 2>&1
-sudo crontab -e
+- Cron Job
+	- * * * * * cd /var/www/Organizacional-ccbeu && php artisan schedule:run >> /dev/null 2>&1
+	- sudo crontab -e
 
-Para redefinição de senha
-	No .env
-		MAIL_DRIVER=smtp
-		MAIL_HOST=smtp.gmail.com
-		MAIL_PORT=587
-		MAIL_USERNAME=email@gmail.com
-		MAIL_PASSWORD=senha
-		MAIL_ENCRYPTION=tls
-	E realize a instalar do guzzle
+- Para redefinição de senha
+	- No .env
+		- MAIL_DRIVER=smtp
+		- MAIL_HOST=smtp.gmail.com
+		- MAIL_PORT=587
+		- MAIL_USERNAME=email@gmail.com
+		- MAIL_PASSWORD=senha
+		- MAIL_ENCRYPTION=tls
+	- E realize a instalar do guzzle
 
-ERRO Temporary failure in name resolution
-Solução => sudo systemctl enable systemd-resolved.service
+- ERRO Temporary failure in name resolution
+	- Solução => sudo systemctl enable systemd-resolved.service
 
-ERRO file_put_contents no storage
-Solução => 
-	 php artisan cache:clear
-	 chmod -R gu+w storage
-	 chmod -R guo+w storage
+- ERRO file_put_contents no storage
+	- Solução => 
+	 	- php artisan cache:clear
+	 	- chmod -R gu+w storage
+	 	- chmod -R guo+w storage
