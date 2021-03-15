@@ -40,7 +40,7 @@
 - Passo 4: Configurando servidor 
     - sudo nano /etc/nginx/sites-available/default
     - Dentro do arquivo deixe desse jeito
-    server {
+    - server {
     listen 80;
     server_name _;
     root "/var/www/AppName/public";
